@@ -16,3 +16,5 @@ Generate your API key and securely copy it. You’ll need it to make authenticat
 Step 4: Access Documentation
 https://ai.google.dev/gemini-api/docs
 Go to the Google AI Studio Documentation to explore:
+
+readlineSync -->> use input for user

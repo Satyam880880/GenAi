@@ -1,29 +1,39 @@
 import dotenv from 'dotenv';
+import readlineSync from 'readline-sync';
 
 dotenv.config();
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({apiKey: process.env.GOOGLE_GENAI_API_KEY});
 
-async function main() {
+const History = []
+async function Chatting(userProblem) {
+   History.push({
+    role:'user',
+    parts:[{text:userProblem}]
+  })
+
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
-    contents: [
-      {
-        role: "user",
-        parts:[{text: "Hi , my name satyam"}],
-      },
-      {
-        role: "model",
-        parts: [{text:"Hi Satyam! It's great to meet you ! How can I help you today?"}]
-      },
-      {
-        role: "user",
-        parts:[{text: "what is my name?"}],
-      }
-    ],
+    contents: History
   });
+ 
+  History.push({
+    role:'model',
+    parts:[{text:response.text}]
+  })
+  
+  console.log("\n");
   console.log(response.text);
+
 }
 
-await main();
+async function main(){
+   
+   const userProblem = readlineSync.question("Ask me anything--> ");
+   await Chatting(userProblem);
+   main();
+}
+
+
+main();
